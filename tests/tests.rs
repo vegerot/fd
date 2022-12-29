@@ -808,6 +808,62 @@ fn test_custom_ignore_precedence() {
     te.assert_output(&["--no-ignore", "foo"], "inner/foo");
 }
 
+/// Don't require git to respect gitignore (--no-require-git)
+#[test]
+fn test_respect_ignore_files() {
+    let te = TestEnv::new(DEFAULT_DIRS, DEFAULT_FILES);
+
+    // Not in a git repo anymore
+    fs::remove_dir(te.test_root().join(".git")).unwrap();
+
+    // don't respect gitignore because we're not in a git repo
+    te.assert_output(
+        &["foo"],
+        "a.foo
+        gitignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    // respect gitignore because we set `--ignore-vcs`
+    te.assert_output(
+        &["--no-require-git", "foo"],
+        "a.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    // make sure overriding works
+    te.assert_output(
+        &["--no-require-git", "--require-git", "foo"],
+        "a.foo
+        gitignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+
+    te.assert_output(
+        &["--no-require-git", "--no-ignore", "foo"],
+        "a.foo
+        gitignored.foo
+        fdignored.foo
+        one/b.foo
+        one/two/c.foo
+        one/two/C.Foo2
+        one/two/three/d.foo
+        one/two/three/directory_foo/",
+    );
+}
+
 /// VCS ignored files (--no-ignore-vcs)
 #[test]
 fn test_no_ignore_vcs() {
