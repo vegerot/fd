@@ -70,9 +70,15 @@ pub struct Opts {
     )]
     pub no_ignore_vcs: bool,
 
+    /// Do not require a git repository to respect gitignores.
     /// Overrides --no-ignore-vcs
-    #[arg(long, overrides_with = "no_ignore_vcs", hide = true, action = ArgAction::SetTrue)]
-    ignore_vcs: (),
+    #[arg(
+        long,
+        overrides_with = "no_ignore_vcs",
+        hide_short_help = true,
+        help = "Do not require a git repository to use gitignores."
+    )]
+    pub ignore_vcs: bool,
 
     /// Show search results from files and directories that would otherwise be
     /// ignored by '.gitignore', '.ignore', or '.fdignore' files in parent directories.

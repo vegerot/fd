@@ -238,7 +238,10 @@ fn construct_config(mut opts: Opts, pattern_regexps: &[String]) -> Result<Config
         search_full_path: opts.full_path,
         ignore_hidden: !(opts.hidden || opts.rg_alias_ignore()),
         read_fdignore: !(opts.no_ignore || opts.rg_alias_ignore()),
-        read_vcsignore: !(opts.no_ignore || opts.rg_alias_ignore() || opts.no_ignore_vcs),
+        read_vcsignore: opts.ignore_vcs
+            || !(opts.no_ignore || opts.rg_alias_ignore() || opts.no_ignore_vcs),
+        force_read_vcsignore: opts.ignore_vcs
+            && !(opts.no_ignore || opts.rg_alias_ignore() || opts.no_ignore_vcs),
         read_parent_ignore: !opts.no_ignore_parent,
         read_global_ignore: !(opts.no_ignore
             || opts.rg_alias_ignore()

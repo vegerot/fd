@@ -27,8 +27,11 @@ pub struct Config {
     /// Whether to respect ignore files in parent directories or not.
     pub read_parent_ignore: bool,
 
-    /// Whether to respect VCS ignore files (`.gitignore`, ..) or not.
+    /// Whether to respect VCS ignore files (`.gitignore`, ..) if in a git repo (or not).
     pub read_vcsignore: bool,
+
+    /// Whether to always respect VCS ignore files (`.gitignore`, ..) whether or not in a git repo.
+    pub force_read_vcsignore: bool,
 
     /// Whether to respect the global ignore file or not.
     pub read_global_ignore: bool,
