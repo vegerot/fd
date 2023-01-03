@@ -2414,6 +2414,7 @@ fn test_number_parsing_errors() {
 #[test_case("--hidden", &["--no-hidden"] ; "hidden")]
 #[test_case("--no-ignore", &["--ignore"] ; "no-ignore")]
 #[test_case("--no-ignore-vcs", &["--ignore-vcs"] ; "no-ignore-vcs")]
+#[test_case("--no-require-git", &["--require-git"] ; "no-require-git")]
 #[test_case("--follow", &["--no-follow"] ; "follow")]
 #[test_case("--absolute-path", &["--relative-path"] ; "absolute-path")]
 #[test_case("-u", &["--ignore", "--no-hidden"] ; "u")]
